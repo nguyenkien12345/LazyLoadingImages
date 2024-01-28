@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Images Like A Pro</title>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    img {
+        width: 100%;
+        display: block;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .blur-load {
+        position: relative;
+        background-image: url(images/loading.jpg);
+        background-size: cover;
+        background-position: center;
+    }
+
+    .blur-load::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        animation: pulse 2.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            background-color: rgba(255, 255, 255, 0);
+        }
+        50% {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        100% {
+            background-color: rgba(255, 255, 255, 0);
+        }
+    }
+
+    /* Khi ảnh đang load */
+    .blur-load > img {
+        opacity: 0;
+        transition: opacity 200ms ease-in-out;
+    }
+
+    /* Khi ảnh đã load xong hoàn toàn */
+    .blur-load.loaded::before {
+       content: none;
+    }
+
+    /* Khi ảnh đã load xong hoàn toàn */
+    .blur-load.loaded > img {
+        opacity: 1;
+    }
+</style>
+
+<body>
+<div class="grid">
+    <div class="blur-load">
+        <img src="https://source.unsplash.com/random?ver=1" loading="lazy"/>
+    </div>
+    <div class="blur-load">
+        <img src="https://source.unsplash.com/random?ver=2" loading="lazy"/>
+    </div>
+    <div class="blur-load">
+        <img src="https://source.unsplash.com/random?ver=3" loading="lazy"/>
+    </div>
+    <div class="blur-load">
+        <img src="https://source.unsplash.com/random?ver=4" loading="lazy"/>
+    </div>
+    <div class="blur-load">
+        <img src="https://source.unsplash.com/random?ver=5" loading="lazy"/>
+    </div>
+    <div class="blur-load">
+        <img src="https://source.unsplash.com/random?ver=6" loading="lazy"/>
+    </div>
+    <div class="blur-load">
+        <img src="https://source.unsplash.com/random?ver=7" loading="lazy"/>
+    </div>
+    <div class="blur-load">
+        <img src="https://source.unsplash.com/random?ver=8" loading="lazy"/>
+    </div>
+    <div class="blur-load">
+        <img src="https://source.unsplash.com/random?ver=9" loading="lazy"/>
+    </div>
+    <div class="blur-load">
+        <img src="https://source.unsplash.com/random?ver=10" loading="lazy"/>
+    </div>
+</div>
+
+<script type="text/javascript">
+    const blurredImageDiv = document.querySelectorAll(".blur-load");
+    blurredImageDiv.forEach((item) => {
+        const image = item.querySelector("img");
+        // Xử lý khi đã load ảnh xong hoàn toàn
+        function loaded() {
+            item.classList.add("loaded")
+        }
+        if (image.complete) {
+            loaded()
+        } else {
+            image.addEventListener("load", loaded)
+        }
+    });
+</script>
+</body>
+
+</html>
